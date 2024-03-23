@@ -17,5 +17,3 @@ python torch_mutator_infer.py
 ```
 Then, we will get a `unique_mutators.json` which records the generated mutators.
 The log file is located at `logs/torch_mutator_infer.log`.
-
-# use generated mutators to mutate the programs
