@@ -1,0 +1,1135 @@
+Last login: Sun Mar 10 09:41:46 on ttys003
+(base) beimingyouyu@beimingyouyudeMacBook-Air ~ % ssh secfuzz@shuaicpu4.cse.ust.hk
+secfuzz@shuaicpu4.cse.ust.hk's password: 
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 6.5.0-1015-azure x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Fri Mar 15 02:19:06 PM UTC 2024
+
+  System load:  3.806640625       Processes:                760
+  Usage of /:   12.7% of 1.82TB   Users logged in:          1
+  Memory usage: 11%               IPv4 address for docker0: 172.17.0.1
+  Swap usage:   0%                IPv4 address for enp67s0: 143.89.191.108
+
+  => /export/d1 is using 90.7% of 7.22TB
+  => /export/d2 is using 85.2% of 7.22TB
+  => /export/ssd1 is using 86.9% of 1.83TB
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+55 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+9 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+
+*** System restart required ***
+Last login: Fri Mar  8 03:07:58 2024 from 143.89.176.82
+secfuzz@shuaicpu4:~$ docker ps
+CONTAINER ID   IMAGE              COMMAND   CREATED         STATUS         PORTS     NAMES
+9d45bacfeafa   titanfuzz:latest   "bash"    4 minutes ago   Up 4 minutes             practical_carver
+secfuzz@shuaicpu4:~$ docker exec -it 9d45bacfeafa /bin/bash
+
+________                               _______________                
+___  __/__________________________________  ____/__  /________      __
+__  /  _  _ \_  __ \_  ___/  __ \_  ___/_  /_   __  /_  __ \_ | /| / /
+_  /   /  __/  / / /(__  )/ /_/ /  /   _  __/   _  / / /_/ /_ |/ |/ / 
+/_/    \___//_/ /_//____/ \____//_/    /_/      /_/  \____/____/|__/
+
+
+WARNING: You are running this container as root, which can cause new files in
+mounted volumes to be created as the root user on your host machine.
+
+To avoid this, run the container by specifying your user's userid:
+
+$ docker run -u $(id -u):$(id -g) args...
+
+root@9d45bacfeafa:/home# python
+Python 3.8.10 (default, Jun 22 2022, 20:18:18) 
+[GCC 9.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import torch
+>>> torch.__version__
+'1.12.1+cu113'
+>>> torch.cuda.is_available()
+/usr/local/lib/python3.8/dist-packages/torch/cuda/__init__.py:83: UserWarning: CUDA initialization: Unexpected error from cudaGetDeviceCount(). Did you run some cuda functions before calling NumCudaDevices() that might have already set an error? Error 34: CUDA driver is a stub library (Triggered internally at  ../c10/cuda/CUDAFunctions.cpp:109.)
+  return torch._C._cuda_getDeviceCount() > 0
+False
+>>> import tensorflow as tf
+2024-03-15 14:20:03.075647: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+>>> tf.__version__
+'2.11.0-rc1'
+>>> tf.config.list_physical_devices('GPU')
+2024-03-15 14:20:10.702991: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:20:10.703027: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+[]
+>>> exit()
+root@9d45bacfeafa:/home# ls
+tf  torch  unparser.patch
+root@9d45bacfeafa:/home# cd tf/
+root@9d45bacfeafa:/home/tf# ls
+tf.audio.decode_wav-reported                                        tf.raw_ops.AudioSpectrogram-confirmed      tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed                                 tf.raw_ops.AvgPoolGrad-confirmed           tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported                               tf.raw_ops.DatasetToTFRecord-reported      tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed                                     tf.raw_ops.Dilation2DBackpropFilter-known  tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported                                            tf.raw_ops.DrawBoundingBoxes-known         tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known       tf.raw_ops.ResourceApplyMomentum-reported               tf.raw_ops.TensorScatterSub-confirmed
+root@9d45bacfeafa:/home/tf# cd tf.audio.decode_wav-reported
+root@9d45bacfeafa:/home/tf/tf.audio.decode_wav-reported# ls
+bug.py  ori.py
+root@9d45bacfeafa:/home/tf/tf.audio.decode_wav-reported# cat bug.py 
+import tensorflow as tf
+import numpy as np
+import io
+
+# Generate input data
+sample_rate = 44100
+num_channels = 2
+duration_seconds = 5
+num_samples = sample_rate * duration_seconds
+input_data = np.random.randint(-32768, 32767, size=(num_samples, num_channels)).astype(np.int16)
+
+# Convert NumPy array to WAV file contents
+wav_io = io.BytesIO()
+wav_write = tf.audio.encode_wav(input_data, sample_rate)
+wav_io.write(wav_write.numpy())
+wav_contents = wav_io.getvalue()
+
+# Decode the WAV file contents with desired_channels satisfying the requirement
+desired_channels = -num_channels - 1  # int_1 is less than 0 and also less than negative of the number of dimensions
+decoded_audio = tf.audio.decode_wav(wav_contents, desired_channels=desired_channels)
+
+# Print the decoded audio tensor
+print(decoded_audio)
+
+# https://github.com/tensorflow/tensorflow/issues/63687
+# int_1 is less than 0 and also less than negative of the number of dimensionsroot@9d45bacfeafa:/home/tf/tf.audio.decode_wav-reported# 
+root@9d45bacfeafa:/home/tf/tf.audio.decode_wav-reported# python bug.py 
+2024-03-15 14:20:36.001737: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:20:37.281485: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:20:37.281536: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:20:37.281799: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:20:37.325400: F tensorflow/core/framework/tensor_shape.cc:201] Non-OK-status: InitDims(dim_sizes) status: INVALID_ARGUMENT: Expected a non-negative size, got -3
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf/tf.audio.decode_wav-reported# cd ..
+root@9d45bacfeafa:/home/tf# ls
+tf.audio.decode_wav-reported                                        tf.raw_ops.AudioSpectrogram-confirmed      tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed                                 tf.raw_ops.AvgPoolGrad-confirmed           tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported                               tf.raw_ops.DatasetToTFRecord-reported      tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed                                     tf.raw_ops.Dilation2DBackpropFilter-known  tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported                                            tf.raw_ops.DrawBoundingBoxes-known         tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known       tf.raw_ops.ResourceApplyMomentum-reported               tf.raw_ops.TensorScatterSub-confirmed
+root@9d45bacfeafa:/home/tf# cat tf.experimental.numpy.cos-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.constant([0.0, 1.0, 2.0, 3.0, 4.0])
+
+# Quantize the input data
+quantized_input_data = tf.quantization.fake_quant_with_min_max_args(input_data, min=-6.0, max=6.0)
+
+# Invoke tf.experimental.numpy.cos to process quantized input data
+result = tf.experimental.numpy.cos(quantized_input_data)
+
+print(result)
+
+# https://github.com/tensorflow/tensorflow/issues/63271
+# A tensor that is already quantizedroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.experimental.numpy.cos-confirmed/bug.py 
+2024-03-15 14:21:03.912056: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:21:05.196367: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:21:05.196420: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:21:05.196679: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+tf.Tensor([ 1.          0.55016434 -0.43742502 -0.9915842  -0.6536436 ], shape=(5,), dtype=float32)
+root@9d45bacfeafa:/home/tf# ls
+tf.audio.decode_wav-reported                                        tf.raw_ops.AudioSpectrogram-confirmed      tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed                                 tf.raw_ops.AvgPoolGrad-confirmed           tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported                               tf.raw_ops.DatasetToTFRecord-reported      tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed                                     tf.raw_ops.Dilation2DBackpropFilter-known  tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported                                            tf.raw_ops.DrawBoundingBoxes-known         tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known       tf.raw_ops.ResourceApplyMomentum-reported               tf.raw_ops.TensorScatterSub-confirmed
+root@9d45bacfeafa:/home/tf# cat tf.image.draw_bounding_boxes-reported/bug.py 
+import tensorflow as tf
+import numpy as np
+
+# Generate input data
+batch_size = 1
+image_height = 100
+image_width = 100
+num_channels = 3
+num_boxes = 2
+
+images = np.random.rand(batch_size, image_height, image_width, num_channels)
+boxes = np.random.rand(batch_size, num_boxes, 4)
+colors = np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])  # Define colors for the bounding boxes
+
+# Invoke tf.image.draw_bounding_boxes
+input_images = tf.convert_to_tensor(images, dtype=tf.float32)
+input_boxes = tf.convert_to_tensor(boxes, dtype=tf.float32)
+input_colors = tf.convert_to_tensor(colors, dtype=tf.float32)
+
+# Reshape the input_images to satisfy the requirement
+reshaped_images = tf.reshape(input_images, [image_height, image_width, num_channels])
+
+output_images = tf.image.draw_bounding_boxes(reshaped_images, input_boxes, colors)
+
+# Print the output images
+print(output_images)
+
+# https://github.com/tensorflow/tensorflow/issues/63688root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.image.draw_bounding_boxes-reported/bug.py 
+2024-03-15 14:21:39.458262: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:21:40.745034: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:21:40.745086: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:21:40.745356: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.image.draw_bounding_boxes-reported/bug.py", line 23, in <module>
+    output_images = tf.image.draw_bounding_boxes(reshaped_images, input_boxes, colors)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__DrawBoundingBoxesV2_device_/job:localhost/replica:0/task:0/device:CPU:0}} The rank of the images should be 4 [Op:DrawBoundingBoxesV2]
+root@9d45bacfeafa:/home/tf# ls
+tf.audio.decode_wav-reported                                        tf.raw_ops.AudioSpectrogram-confirmed      tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed                                 tf.raw_ops.AvgPoolGrad-confirmed           tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported                               tf.raw_ops.DatasetToTFRecord-reported      tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed                                     tf.raw_ops.Dilation2DBackpropFilter-known  tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported                                            tf.raw_ops.DrawBoundingBoxes-known         tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known       tf.raw_ops.ResourceApplyMomentum-reported               tf.raw_ops.TensorScatterSub-confirmed
+root@9d45bacfeafa:/home/tf# cat tf.io.TFRecordOptions-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = b'input_data_example'
+
+# Create TFRecordOptions with custom compression_method
+options = tf.io.TFRecordOptions(compression_type='ZLIB', compression_method=3)
+
+# Process input data using TFRecordOptions
+with tf.io.TFRecordWriter('output.tfrecord', options=options) as writer:
+    writer.write(input_data)
+
+# https://github.com/tensorflow/tensorflow/issues/63337
+# int root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.io.TFRecordOptions-confirmed/bug.py
+2024-03-15 14:22:14.442652: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:22:15.727565: F tensorflow/tsl/lib/io/record_writer.cc:74] Failed to initialize Zlib inputbuffer. Error: INVALID_ARGUMENT: deflateInit failed with status-2
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.linalg.solve-reported/bug.py 
+import tensorflow as tf
+import numpy as np
+
+# Generate random input data
+matrix = np.random.rand(2, 3)
+rhs = np.random.rand(3)
+
+# Invoke tf.linalg.solve
+result = tf.linalg.solve(matrix, rhs)
+
+# Print the result
+print(result)
+
+# https://github.com/tensorflow/tensorflow/issues/63339
+# A 1-dimensional tensor (vector)root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.linalg.solve-reported/bug.py
+2024-03-15 14:22:35.338679: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:22:36.621740: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:22:36.621790: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:22:36.622051: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.linalg.solve-reported/bug.py", line 9, in <module>
+    result = tf.linalg.solve(matrix, rhs)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_linalg_ops.py", line 1688, in matrix_solve
+    return matrix_solve_eager_fallback(
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_linalg_ops.py", line 1742, in matrix_solve_eager_fallback
+    _result = _execute.execute(b"MatrixSolve", 1, inputs=_inputs_flat,
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/eager/execute.py", line 52, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__MatrixSolve_device_/job:localhost/replica:0/task:0/device:CPU:0}} All input tensors must have the same rank. [Op:MatrixSolve]
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.constant(3.0)
+
+# Define min and max values per channel
+min_per_channel = tf.constant(2.0)
+max_per_channel = tf.constant(4.0)
+
+# Invoke fake_quant_with_min_max_vars_per_channel
+quantized_data = tf.quantization.fake_quant_with_min_max_vars_per_channel(input_data, min_per_channel, max_per_channel)
+
+# Print the quantized data
+print(quantized_data)
+
+# https://github.com/tensorflow/tensorflow/issues/63351
+# A zero-dimensional tensor (scalar)root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed/bug.py
+2024-03-15 14:23:01.692542: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:23:02.979614: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:23:02.979665: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:23:02.979928: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed/bug.py", line 11, in <module>
+    quantized_data = tf.quantization.fake_quant_with_min_max_vars_per_channel(input_data, min_per_channel, max_per_channel)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_array_ops.py", line 3231, in fake_quant_with_min_max_vars_per_channel
+    _ops.raise_from_not_ok_status(e, name)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__FakeQuantWithMinMaxVarsPerChannel_device_/job:localhost/replica:0/task:0/device:CPU:0}} `min` must be rank 1 but is rank 0 [Op:FakeQuantWithMinMaxVarsPerChannel]
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cd tf.raw_ops.AudioSpectrogram-confirmed
+root@9d45bacfeafa:/home/tf/tf.raw_ops.AudioSpectrogram-confirmed# cd ..
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.AudioSpectrogram-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.random.normal([1, 44100], dtype=tf.float32)
+
+# Invoke tf.raw_ops.AudioSpectrogram with a negative window_size
+spectrogram = tf.raw_ops.AudioSpectrogram(input=input_data, window_size=-1024, stride=64, magnitude_squared=False)
+
+# Print the spectrogram
+print(spectrogram)
+
+# https://github.com/tensorflow/tensorflow/issues/63352
+# int_1 is a negative integerroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.AudioSpectrogram-confirmed/bug.py
+2024-03-15 14:23:24.934692: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:23:26.212179: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:23:26.212229: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:23:26.212487: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Segmentation fault (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.AvgPoolGrad-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.random.normal([1, 28, 28, 3])
+grad = tf.random.normal([1, 14, 14, 6])  # Change the number of channels in grad tensor
+
+# Perform average pooling
+result = tf.nn.avg_pool2d(input_data, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='VALID', data_format='NHWC')
+
+# Compute gradient
+grad_result = tf.raw_ops.AvgPoolGrad(orig_input_shape=tf.shape(input_data), grad=grad, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='VALID', data_format='NHWC')
+
+print(grad_result)
+
+# https://github.com/tensorflow/tensorflow/issues/63353
+# change valueroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.AvgPoolGrad-confirmed/bug.py 
+2024-03-15 14:23:51.141719: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:23:52.419338: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:23:52.419386: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:23:52.419657: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+malloc(): invalid size (unsorted)
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.DatasetToTFRecord-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = [[1, 2], [3, 4], [5, 6]]
+
+# Convert input data to strings
+input_data_strings = [[str(d) for d in inner_list] for inner_list in input_data]
+
+# Create a dataset from the input data strings
+dataset = tf.data.Dataset.from_tensor_slices(input_data_strings)
+
+# Define the filename for the TFRecord file
+filename = "output.tfrecord"
+
+# Invoke tf.raw_ops.DatasetToTFRecord to process input data
+tf.raw_ops.DatasetToTFRecord(input_dataset=dataset._variant_tensor, filename=filename, compression_type="")
+
+# https://github.com/tensorflow/tensorflow/issues/63689
+# A 2D tensor on a CPU backendroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.DatasetToTFRecord-reported/bug.py
+2024-03-15 14:24:08.937574: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:24:10.231399: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:24:10.231455: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:24:10.231715: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:24:10.270720: F tensorflow/core/framework/tensor.cc:733] Check failed: 1 == NumElements() (1 vs. 2)Must have a one element tensor
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.Dilation2DBackpropFilter-known/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.random.normal([1, 28, 28, 3])
+filter_data = tf.random.normal([3, 3, 3])
+out_backprop_data = tf.random.normal([1, 28, 28, 3, 3])  # Adding an extra dimension
+
+# Invoke tf.raw_ops.Dilation2DBackpropFilter
+output = tf.raw_ops.Dilation2DBackpropFilter(input=input_data, filter=filter_data, out_backprop=out_backprop_data, strides=[1, 1, 1, 1], rates=[1, 1, 1, 1], padding="SAME")
+
+print(output)
+
+# known
+# shaperoot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.Dilation2DBackpropFilter-known/bug.py
+2024-03-15 14:24:29.797330: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:24:31.068374: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:24:31.068424: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:24:31.068695: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:24:31.099799: F tensorflow/core/framework/tensor_shape.cc:45] Check failed: NDIMS == dims() (4 vs. 5)Asking for tensor of 4 dimensions from a tensor of 5 dimensions
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.DrawBoundingBoxes-known/bug.py 
+import tensorflow as tf
+import numpy as np
+
+# Generate input data
+batch_size = 1
+image_height = 100
+image_width = 100
+num_channels = 3
+num_boxes = 2
+
+images = np.random.rand(image_height, image_width, num_channels).astype(np.float32)  # Remove the batch dimension
+boxes = np.random.rand(batch_size, num_boxes, 4).astype(np.float32)
+
+# Invoke tf.raw_ops.DrawBoundingBoxes with a zero-dimensional tensor for images
+drawn_images = tf.raw_ops.DrawBoundingBoxes(images=tf.convert_to_tensor(images),
+                                           boxes=tf.convert_to_tensor(boxes))
+
+# Print the result
+print(drawn_images)
+
+# https://github.com/tensorflow/tensorflow/issues/63354
+# A tensor with 3 dimensionsroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.DrawBoundingBoxes-known/bug.py
+2024-03-15 14:24:54.617708: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:24:55.893829: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:24:55.893880: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:24:55.894126: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.raw_ops.DrawBoundingBoxes-known/bug.py", line 15, in <module>
+    drawn_images = tf.raw_ops.DrawBoundingBoxes(images=tf.convert_to_tensor(images),
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/util/tf_export.py", line 412, in wrapper
+    return f(**kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_image_ops.py", line 1375, in draw_bounding_boxes
+    _ops.raise_from_not_ok_status(e, name)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__DrawBoundingBoxes_device_/job:localhost/replica:0/task:0/device:CPU:0}} The rank of the images should be 4 [Op:DrawBoundingBoxes]
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.DrawBoundingBoxesV2-known/bug.py 
+import tensorflow as tf
+import numpy as np
+
+# Generate input data
+image_height = 100
+image_width = 100
+num_channels = 3
+num_boxes = 2
+
+images = tf.random.uniform((image_height, image_width, num_channels))  # Change the shape to satisfy the requirement of a zero-dimensional tensor
+boxes = tf.random.uniform((1, num_boxes, 4))
+colors = tf.constant([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])  # Define colors for each bounding box
+
+# Invoke tf.raw_ops.DrawBoundingBoxesV2
+output_images = tf.raw_ops.DrawBoundingBoxesV2(images=images, boxes=boxes, colors=colors)
+
+# Print the output images
+print(output_images)
+
+# https://github.com/tensorflow/tensorflow/issues/63354root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.DrawBoundingBoxesV2-known/bug.py
+2024-03-15 14:25:17.793758: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:25:19.076999: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:25:19.077054: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:25:19.077312: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.raw_ops.DrawBoundingBoxesV2-known/bug.py", line 15, in <module>
+    output_images = tf.raw_ops.DrawBoundingBoxesV2(images=images, boxes=boxes, colors=colors)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/util/tf_export.py", line 412, in wrapper
+    return f(**kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_image_ops.py", line 1448, in draw_bounding_boxes_v2
+    _ops.raise_from_not_ok_status(e, name)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__DrawBoundingBoxesV2_device_/job:localhost/replica:0/task:0/device:CPU:0}} The rank of the images should be 4 [Op:DrawBoundingBoxesV2]
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.ExperimentalDatasetToTFRecord-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.data.Dataset.range(10).map(lambda x: tf.strings.as_string(x))
+input_data = input_data.batch(2)  # Batch the dataset to have 3 dimensions with each dimension size greater than 1
+
+# Invoke tf.raw_ops.ExperimentalDatasetToTFRecord to process input data
+filename = tf.constant("output.tfrecord")
+compression_type = tf.constant("GZIP")
+tf.raw_ops.ExperimentalDatasetToTFRecord(input_dataset=input_data._variant_tensor, filename=filename, compression_type=compression_type)
+
+# https://github.com/tensorflow/tensorflow/issues/63691
+# A tensor with 3 dimensions, each dimension of size greater than 1root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.ExperimentalDatasetToTFRecord-reported/bug.py 
+2024-03-15 14:25:36.419221: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:25:37.703283: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:25:37.703333: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:25:37.703598: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:From /usr/local/lib/python3.8/dist-packages/tensorflow/python/autograph/pyct/static_analysis/liveness.py:83: Analyzer.lamba_check (from tensorflow.python.autograph.pyct.static_analysis.liveness) is deprecated and will be removed after 2023-09-23.
+Instructions for updating:
+Lambda fuctions will be no more assumed to be used in the statement where they are used, or at least in the same block. https://github.com/tensorflow/tensorflow/issues/56089
+2024-03-15 14:25:37.765204: F tensorflow/core/framework/tensor.cc:733] Check failed: 1 == NumElements() (1 vs. 2)Must have a one element tensor
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.constant([[1.5, 2.5, 3.5], [4.5, 5.5, 6.5]])
+
+# Define min and max values per channel
+min_per_channel = tf.constant([1.0, 2.0, 3.0])
+max_per_channel = tf.constant([2.0, 3.0, 4.0])
+
+# Invoke tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel with inputs as 0-dimensional tensor and max as a 1x3 tensor
+quantized_output = tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel(inputs=tf.constant(0.0), min=min_per_channel, max=max_per_channel, num_bits=8, narrow_range=False)
+
+# Print the quantized output
+print(quantized_output)
+
+# https://github.com/tensorflow/tensorflow/issues/63355
+# 0-dimensional tensorroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed/bug.py
+2024-03-15 14:26:00.177945: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:26:01.453153: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:26:01.453204: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:26:01.453464: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed/bug.py", line 11, in <module>
+    quantized_output = tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel(inputs=tf.constant(0.0), min=min_per_channel, max=max_per_channel, num_bits=8, narrow_range=False)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/util/tf_export.py", line 412, in wrapper
+    return f(**kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_array_ops.py", line 3231, in fake_quant_with_min_max_vars_per_channel
+    _ops.raise_from_not_ok_status(e, name)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__FakeQuantWithMinMaxVarsPerChannel_device_/job:localhost/replica:0/task:0/device:CPU:0}} min has incorrect size, expected 0 was 3 [Op:FakeQuantWithMinMaxVarsPerChannel]
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.FusedPadConv2D-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.random.normal([3, 10, 10])
+
+# Define paddings
+paddings = tf.constant([[0, 0], [1, 1], [1, 1]])
+
+# Define filter
+filter = tf.random.normal([3, 3, 3, 16])
+
+# Define mode
+mode = "REFLECT"  # Change mode to "REFLECT" or "SYMMETRIC"
+
+# Define strides
+strides = [1, 1, 1, 1]
+
+# Define padding
+padding = "VALID"
+
+# Invoke tf.raw_ops.FusedPadConv2D
+output = tf.raw_ops.FusedPadConv2D(input=input_data, paddings=paddings, filter=filter, mode=mode, strides=strides, padding=padding)
+
+print(output)
+
+# https://github.com/tensorflow/tensorflow/issues/63376
+# A tensor with 3 dimensions, each dimension of size greater than 1root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.FusedPadConv2D-confirmed/bug.py 
+2024-03-15 14:26:27.749090: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:26:29.012847: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:26:29.012900: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:26:29.013166: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.raw_ops.FusedPadConv2D-confirmed/bug.py", line 22, in <module>
+    output = tf.raw_ops.FusedPadConv2D(input=input_data, paddings=paddings, filter=filter, mode=mode, strides=strides, padding=padding)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/util/tf_export.py", line 412, in wrapper
+    return f(**kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_nn_ops.py", line 4599, in fused_pad_conv2d
+    _ops.raise_from_not_ok_status(e, name)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__FusedPadConv2D_device_/job:localhost/replica:0/task:0/device:CPU:0}} The first dimension of paddings must be the rank of inputs: 4 [3,2] [3,10,10,0] [Op:FusedPadConv2D]
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.QuantizeAndDequantizeV3-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.constant([1.5, 2.5, 3.5, 4.5])
+
+# Define input_min with 3 dimensions, each dimension of size greater than 1
+input_min = tf.constant([[[0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0]], [[0.0, 0.0], [0.0, 0.0]]])
+
+# Define input_max, num_bits, and other parameters
+input_max = tf.constant(5.0)
+num_bits = tf.constant(8)
+signed_input = True
+range_given = True
+narrow_range = False
+axis = -1
+
+# Invoke tf.raw_ops.QuantizeAndDequantizeV3
+output_data = tf.raw_ops.QuantizeAndDequantizeV3(input=input_data, input_min=input_min, input_max=input_max, num_bits=num_bits, signed_input=signed_input, range_given=range_given, narrow_range=narrow_range, axis=axis)
+
+# Print the output data
+print(output_data)
+
+# https://github.com/tensorflow/tensorflow/issues/63693
+# A tensor with 3 dimensions, each dimension of size greater than 1root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.QuantizeAndDequantizeV3-reported/bug.py
+2024-03-15 14:26:48.428157: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:26:49.706151: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:26:49.706200: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:26:49.706467: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:26:49.735850: F tensorflow/core/framework/tensor.cc:733] Check failed: 1 == NumElements() (1 vs. 12)Must have a one element tensor
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.ResourceApplyGradientDescent-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+var = tf.Variable(3.0 + 1j, dtype=tf.complex64)  # Change the dtype to complex
+alpha = tf.constant(0.1, dtype=tf.float32)
+delta = tf.constant(0.5, dtype=tf.float32)
+
+# Invoke tf.raw_ops.ResourceApplyGradientDescent
+result = tf.raw_ops.ResourceApplyGradientDescent(var=var.handle, alpha=alpha, delta=delta)
+
+# Print the result
+print(result)
+
+# https://github.com/tensorflow/tensorflow/issues/63695
+# A complex tensorroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.ResourceApplyGradientDescent-reported/bug.py 
+2024-03-15 14:27:06.057729: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:27:07.267815: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:27:07.267868: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:27:07.268055: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:27:07.296128: F tensorflow/core/framework/tensor.cc:725] Check failed: dtype() == expected_dtype (8 vs. 1) float expected, got complex64
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.ResourceApplyMomentum-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+var = tf.Variable([1.0, 2.0, 3.0])
+accum = tf.Variable([0.1, 0.2, 0.3], dtype=tf.complex64)  # Change the dtype to complex
+lr = 0.01
+grad = tf.constant([0.1, 0.2, 0.3])
+momentum = 0.9
+
+# Invoke tf.raw_ops.ResourceApplyMomentum with correct input types
+output = tf.raw_ops.ResourceApplyMomentum(var=var.handle, accum=accum.handle, lr=lr, grad=grad, momentum=momentum)
+
+# Print the output
+print(output)
+
+# https://github.com/tensorflow/tensorflow/issues/63696
+# A complex tensorroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.ResourceApplyMomentum-reported/bug.py 
+2024-03-15 14:27:36.264436: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:27:37.558769: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:27:37.558818: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:27:37.559008: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:27:37.591932: F tensorflow/core/framework/tensor.cc:725] Check failed: dtype() == expected_dtype (8 vs. 1) float expected, got complex64
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.ResourceApplyProximalAdagrad-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+var = tf.Variable([1.0, 2.0, 3.0])
+accum = tf.Variable([0.1, 0.2, 0.3])
+lr = 0.01
+l1 = 0.1
+l2 = 0.01
+grad = tf.constant([0.1, 0.2, 0.3], dtype=tf.float64)  # Change the dtype of grad to satisfy the requirement
+
+# Convert var and accum to resource tensors
+var_resource = tf.raw_ops.VarHandleOp(dtype=var.dtype, shape=var.shape)
+accum_resource = tf.raw_ops.VarHandleOp(dtype=accum.dtype, shape=accum.shape)
+
+# Assign var and accum to the resource tensors
+assign_var = tf.raw_ops.AssignVariableOp(resource=var_resource, value=var)
+assign_accum = tf.raw_ops.AssignVariableOp(resource=accum_resource, value=accum)
+
+# Invoke tf.raw_ops.ResourceApplyProximalAdagrad with resource tensors
+result = tf.raw_ops.ResourceApplyProximalAdagrad(var=var_resource, accum=accum_resource, lr=lr, l1=l1, l2=l2, grad=grad)
+
+# Print the result
+print(result)
+
+# https://github.com/tensorflow/tensorflow/issues/63697
+# A tensor that is in floating-point formatroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.ResourceApplyProximalAdagrad-confirmed/bug.py 
+2024-03-15 14:28:08.037363: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:28:09.303543: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:28:09.303590: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:28:09.303773: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:28:09.335698: F tensorflow/core/framework/tensor.cc:725] Check failed: dtype() == expected_dtype (1 vs. 2) double expected, got float
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.ResourceGather-known/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.constant([[1, 2], [3, 4], [5, 6]])
+indices = tf.constant([0, 1])
+
+# Create a resource variable on a different device and with a different dtype
+with tf.device('/device:GPU:0'):
+    resource_var = tf.Variable([7, 8, 9], dtype=tf.float32)
+
+# Use tf.raw_ops.ResourceGather to gather values
+output = tf.raw_ops.ResourceGather(resource=resource_var.handle, indices=indices, dtype=tf.int32)
+
+print(output)
+
+# known bug
+# tensor_1 is on a different device than the input device and has a different dtyperoot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.ResourceGather-known/bug.py 
+2024-03-15 14:28:52.955784: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:28:54.230261: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:28:54.230309: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:28:54.230567: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:28:54.262028: F tensorflow/core/framework/tensor.cc:719] Check failed: dtype() == expected_dtype (1 vs. 3) int32 expected, got float
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.ResourceSparseApplyKerasMomentum-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+var = tf.Variable([[1.0, 2.0], [3.0, 4.0]], dtype=tf.complex64)  # Change var to a complex tensor
+accum = tf.Variable([[0.1, 0.2], [0.3, 0.4]])
+lr = 0.01
+grad = tf.constant([[0.1, 0.2], [0.3, 0.4]])
+indices = tf.constant([0, 1])  # Make indices one-dimensional
+momentum = 0.9
+
+# Invoke tf.raw_ops.ResourceSparseApplyKerasMomentum
+result = tf.raw_ops.ResourceSparseApplyKerasMomentum(var=var.handle, accum=accum.handle, lr=lr, grad=grad, indices=indices, momentum=momentum)
+
+# Print the result
+print(result)
+
+# https://github.com/tensorflow/tensorflow/issues/63720
+# A complex tensorroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.ResourceSparseApplyKerasMomentum-reported/bug.py 
+2024-03-15 14:29:19.368515: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:29:20.640507: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:29:20.640555: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:29:20.640736: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:29:20.673833: F tensorflow/core/framework/tensor.cc:725] Check failed: dtype() == expected_dtype (8 vs. 1) float expected, got complex64
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.StatefulPartitionedCall-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data = tf.constant([[1, 2, 3], [4, 5, 6]])
+
+# Define the function to be called
+@tf.function
+def my_function(inputs):
+    return tf.reduce_sum(inputs, axis=1)
+
+# Create a callable from the function
+callable_function = tf.function(my_function).get_concrete_function(tf.TensorSpec(shape=None, dtype=tf.int32))
+
+# Invoke tf.raw_ops.StatefulPartitionedCall to process input data
+output = tf.raw_ops.StatefulPartitionedCall(args=[input_data], Tout=None, f=callable_function)
+
+# Print the output
+print(output)
+
+# https://github.com/tensorflow/tensorflow/issues/63721
+# tensor_1 is an undefined or None valueroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.StatefulPartitionedCall-reported/bug.py 
+2024-03-15 14:29:37.748091: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:29:39.032264: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:29:39.032309: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:29:39.032556: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:29:39.090813: F tensorflow/core/framework/op_kernel.cc:979] Check failed: index < outputs_.size() (0 vs. 0)
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.TensorListConcat-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_data_1 = tf.constant([[1, 2, 3], [4, 5, 6]])
+input_data_2 = tf.constant([[7, 8, 9], [10, 11, 12]])
+
+# Create a tensor list
+input_handle = tf.raw_ops.TensorListReserve(element_dtype=tf.int32, element_shape=[2, 3], num_elements=2)
+input_handle = tf.raw_ops.TensorListSetItem(input_handle=input_handle, index=0, item=input_data_1)
+input_handle = tf.raw_ops.TensorListSetItem(input_handle=input_handle, index=1, item=input_data_2)
+
+# Invoke TensorListConcat with explicit shape
+concatenated_data, lengths = tf.raw_ops.TensorListConcat(input_handle=input_handle, element_dtype=tf.int32, element_shape=[6])
+
+# Print the concatenated data
+print(concatenated_data)
+
+# https://github.com/tensorflow/tensorflow/issues/63722
+# A 1-dimensional tensor (vector)root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.TensorListConcat-reported/bug.py 
+2024-03-15 14:30:02.114209: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:30:03.395199: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:30:03.395254: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:30:03.395513: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+tf.Tensor([1 2 3 4], shape=(4,), dtype=int32)
+free(): invalid next size (fast)
+Aborted (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.TensorScatterSub-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+tensor = tf.constant([1, 2, 3, 4, 5])
+indices = tf.constant([[[1], [3]], [[0], [2]]])  # Nested structure for indices
+updates = tf.constant([10, 20])
+
+# Invoke tf.raw_ops.TensorScatterSub
+result = tf.raw_ops.TensorScatterSub(tensor=tensor, indices=indices, updates=updates)
+
+# Print the result
+print(result)
+
+# https://github.com/tensorflow/tensorflow/issues/63378
+# A tensor that contains other tensors, creating a nested structure.root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.TensorScatterSub-confirmed/bug.py
+2024-03-15 14:30:25.335101: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:30:26.610823: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:30:26.610872: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:30:26.611154: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.raw_ops.TensorScatterSub-confirmed/bug.py", line 9, in <module>
+    result = tf.raw_ops.TensorScatterSub(tensor=tensor, indices=indices, updates=updates)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/util/tf_export.py", line 412, in wrapper
+    return f(**kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_array_ops.py", line 11393, in tensor_scatter_sub
+    _ops.raise_from_not_ok_status(e, name)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__TensorScatterSub_device_/job:localhost/replica:0/task:0/device:CPU:0}} Outer dimensions of indices and update must match. Indices shape: [2,2,1], updates shape:[2] [Op:TensorScatterSub]
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.raw_ops.UnicodeEncode-confirmed/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_values = tf.constant([72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100])  # Unicode codepoints for "Hello World"
+input_splits = tf.constant([[0, 5, 11]])  # Split indices for the input_values with two dimensions
+output_encoding = "UTF-8"
+
+# Invoke tf.raw_ops.unicode_encode
+output = tf.raw_ops.UnicodeEncode(input_values=input_values, input_splits=input_splits, output_encoding=output_encoding)
+
+# Print the output
+print(output)
+
+# https://github.com/tensorflow/tensorflow/issues/63379
+# A 2D tensor on a CPU backendroot@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.raw_ops.UnicodeEncode-confirmed/bug.py 
+2024-03-15 14:30:43.630113: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:30:44.901721: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:30:44.901773: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:30:44.902041: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Segmentation fault (core dumped)
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.tensor_scatter_nd_add-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_tensor = tf.zeros([15, 15, 15])
+indices = tf.constant([[[0, 0, 0], [1, 1, 1]], [[2, 2, 2], [3, 3, 3]], [[4, 4, 4], [5, 5, 5]], [[6, 6, 6], [7, 7, 7]], [[8, 8, 8], [9, 9, 9]], [[10, 10, 10], [11, 11, 11]], [[12, 12, 12], [13, 13, 13]], [[14, 14, 14], [0, 0, 0]], [[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]], [[5, 5, 5], [6, 6, 6]], [[7, 7, 7], [8, 8, 8]], [[9, 9, 9], [10, 10, 10]], [[11, 11, 11], [12, 12, 12]], [[13, 13, 13], [14, 14, 14]]])
+updates = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0])  # Cast updates to float
+
+# Invoke tf.tensor_scatter_nd_add
+result = tf.tensor_scatter_nd_add(input_tensor, indices, updates)
+
+# Print the result
+print(result)
+
+# https://github.com/tensorflow/tensorflow/issues/63380
+# A tensor with shape (15, 15, 15) which has both a trailing dimension and total number of elements not divisible by 16root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.tensor_scatter_nd_add-reported/bug.py 
+2024-03-15 14:31:04.674610: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:31:05.944120: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:31:05.944175: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:31:05.944430: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.tensor_scatter_nd_add-reported/bug.py", line 9, in <module>
+    result = tf.tensor_scatter_nd_add(input_tensor, indices, updates)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/ops/gen_array_ops.py", line 11042, in tensor_scatter_add
+    _ops.raise_from_not_ok_status(e, name)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__TensorScatterAdd_device_/job:localhost/replica:0/task:0/device:CPU:0}} Outer dimensions of indices and update must match. Indices shape: [15,2,3], updates shape:[15] [Op:TensorScatterAdd]
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# ls
+output.tfrecord                        tf.quantization.fake_quant_with_min_max_vars_per_channel-confirmed  tf.raw_ops.DrawBoundingBoxesV2-known                    tf.raw_ops.ResourceApplyMomentum-reported             tf.raw_ops.TensorScatterSub-confirmed
+tf.audio.decode_wav-reported           tf.raw_ops.AudioSpectrogram-confirmed                               tf.raw_ops.ExperimentalDatasetToTFRecord-reported       tf.raw_ops.ResourceApplyProximalAdagrad-confirmed     tf.raw_ops.UnicodeEncode-confirmed
+tf.experimental.numpy.cos-confirmed    tf.raw_ops.AvgPoolGrad-confirmed                                    tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel-confirmed  tf.raw_ops.ResourceGather-known                       tf.tensor_scatter_nd_add-reported
+tf.image.draw_bounding_boxes-reported  tf.raw_ops.DatasetToTFRecord-reported                               tf.raw_ops.FusedPadConv2D-confirmed                     tf.raw_ops.ResourceSparseApplyKerasMomentum-reported  tf.tensor_scatter_nd_update-reported
+tf.io.TFRecordOptions-confirmed        tf.raw_ops.Dilation2DBackpropFilter-known                           tf.raw_ops.QuantizeAndDequantizeV3-reported             tf.raw_ops.StatefulPartitionedCall-reported
+tf.linalg.solve-reported               tf.raw_ops.DrawBoundingBoxes-known                                  tf.raw_ops.ResourceApplyGradientDescent-reported        tf.raw_ops.TensorListConcat-reported
+root@9d45bacfeafa:/home/tf# cat tf.tensor_scatter_nd_update-reported/bug.py 
+import tensorflow as tf
+
+# Generate input data
+input_tensor = tf.zeros([2, 2, 2])  # A tensor that contains other tensors, creating a nested structure
+indices = tf.constant([[[0, 0, 0], [1, 1, 1]], [[1, 0, 1], [0, 1, 0]]])
+updates = tf.constant([1, 2], dtype=tf.float32)  # Cast updates to float
+
+# Invoke tf.tensor_scatter_nd_update
+result = tf.tensor_scatter_nd_update(input_tensor, indices, updates)
+
+# Print the result
+print(result)
+
+# https://github.com/tensorflow/tensorflow/issues/63375
+# A tensor that contains other tensors, creating a nested structure.root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# python tf.tensor_scatter_nd_update-reported/bug.py
+2024-03-15 14:31:28.893288: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-15 14:31:30.192097: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:267] failed call to cuInit: UNKNOWN ERROR (34)
+2024-03-15 14:31:30.192148: I tensorflow/compiler/xla/stream_executor/cuda/cuda_diagnostics.cc:163] no NVIDIA GPU device is present: /dev/nvidia0 does not exist
+2024-03-15 14:31:30.192415: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "tf.tensor_scatter_nd_update-reported/bug.py", line 9, in <module>
+    result = tf.tensor_scatter_nd_update(input_tensor, indices, updates)
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/usr/local/lib/python3.8/dist-packages/tensorflow/python/framework/ops.py", line 7215, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__TensorScatterUpdate_device_/job:localhost/replica:0/task:0/device:CPU:0}} Outer dimensions of indices and update must match. Indices shape: [2,2,3], updates shape:[2] [Op:TensorScatterUpdate]
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# 
+root@9d45bacfeafa:/home/tf# cd ../torch/
+root@9d45bacfeafa:/home/torch# ls
+torch.Tensor.to-confirmed  torch.conj_physical-reported                      torch.fft.fft-confirmed   torch.fft.rfftfreq-confirmed  torch.quantized_max_pool1d-confirmed
+torch.all-confirmed        torch.fake_quantize_per_channel_affine-confirmed  torch.fft.fft2-confirmed  torch.lu_unpack-confirmed     torch.where-confirmed
+root@9d45bacfeafa:/home/torch# 

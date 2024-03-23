@@ -1,0 +1,228 @@
+root@9d45bacfeafa:/home/torch# ls
+torch.Tensor.to-confirmed  torch.conj_physical-reported                      torch.fft.fft-confirmed   torch.fft.rfftfreq-confirmed  torch.quantized_max_pool1d-confirmed
+torch.all-confirmed        torch.fake_quantize_per_channel_affine-confirmed  torch.fft.fft2-confirmed  torch.lu_unpack-confirmed     torch.where-confirmed
+root@9d45bacfeafa:/home/torch# python
+Python 3.8.10 (default, Jun 22 2022, 20:18:18) 
+[GCC 9.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import torch
+>>> torch.__version__
+'1.12.1+cu113'
+>>> exit()
+root@9d45bacfeafa:/home/torch# cat torch.Tensor.to-confirmed/bug.py 
+import torch
+input_data = torch.tensor([float('nan')])
+different_input = input_data.to(dtype=torch.int32)
+print(different_input)
+
+# https://github.com/pytorch/pytorch/issues/121226root@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.Tensor.to-confirmed/bug.py 
+tensor([-2147483648], dtype=torch.int32)
+root@9d45bacfeafa:/home/torch# cat torch.all-confirmed/bug.py 
+import torch
+
+# Generate input data
+input_data = torch.tensor([1+2j, 3-4j, 5j, 6])
+
+# Invoke torch.all to process input data
+result = torch.all(input_data)
+
+print(result)
+
+# https://github.com/pytorch/pytorch/issues/120875
+# A complex tensorroot@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.all-confirmed/bug.py 
+torch.all-confirmed/bug.py:7: UserWarning: Casting complex values to real discards the imaginary part (Triggered internally at  ../aten/src/ATen/native/Copy.cpp:250.)
+  result = torch.all(input_data)
+tensor(False)
+root@9d45bacfeafa:/home/torch# cat torch.conj_physical-reported/bug.py 
+import torch
+
+# Generate input data
+input_data = torch.randn(3, 3, dtype=torch.complex64)
+
+# Create a sparse output tensor
+output = torch.sparse_coo_tensor(input_data.shape, dtype=torch.complex64)
+
+# Invoke torch.conj_physical to process input data and store the result in the sparse output tensor
+torch.conj_physical(input_data, out=output)
+
+# Print the output
+print(output)
+
+# https://github.com/pytorch/pytorch/issues/120989
+# mutator: A sparse tensorroot@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.conj_physical-reported/bug.py
+Traceback (most recent call last):
+  File "torch.conj_physical-reported/bug.py", line 10, in <module>
+    torch.conj_physical(input_data, out=output)
+RuntimeError: input.is_sparse() INTERNAL ASSERT FAILED at "../aten/src/ATen/native/sparse/SparseTensorMath.cpp":1682, please report a bug to PyTorch. 
+root@9d45bacfeafa:/home/torch# cat torch.fake_quantize_per_channel_affine-confirmed/bug.py 
+import torch
+import numpy as np
+
+# Generate random input data
+input_data = torch.randn(3, 4, 5, 6)
+
+# Define scale, zero_point, axis, quant_min, and quant_max
+scale = np.array([0.1, 0.2, 0.3, 0.4])  # Convert scale to a numpy array
+zero_point = torch.tensor([1, 2, 3, 4], dtype=torch.int32)  # Ensure the dtype is torch.int32
+axis = 1
+quant_min = 0
+quant_max = 255
+
+# Invoke torch.fake_quantize_per_channel_affine
+output = torch.fake_quantize_per_channel_affine(input_data, torch.from_numpy(scale), zero_point, axis, quant_min, quant_max)
+
+print(output)
+
+# https://github.com/pytorch/pytorch/issues/120903
+# tensor_1 is a numpy array, not a tensorroot@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.fake_quantize_per_channel_affine-confirmed/bug.py
+Traceback (most recent call last):
+  File "torch.fake_quantize_per_channel_affine-confirmed/bug.py", line 15, in <module>
+    output = torch.fake_quantize_per_channel_affine(input_data, torch.from_numpy(scale), zero_point, axis, quant_min, quant_max)
+RuntimeError: !needs_dynamic_casting<func_t>::check(iter) INTERNAL ASSERT FAILED at "../aten/src/ATen/native/cpu/Loops.h":315, please report a bug to PyTorch. 
+root@9d45bacfeafa:/home/torch# ls
+torch.Tensor.to-confirmed  torch.conj_physical-reported                      torch.fft.fft-confirmed   torch.fft.rfftfreq-confirmed  torch.quantized_max_pool1d-confirmed
+torch.all-confirmed        torch.fake_quantize_per_channel_affine-confirmed  torch.fft.fft2-confirmed  torch.lu_unpack-confirmed     torch.where-confirmed
+root@9d45bacfeafa:/home/torch# cat torch.fft.fft-confirmed/bug.py 
+import torch
+
+# Generate input data
+indices = torch.LongTensor([[0, 1, 2],
+                            [2, 0, 1]])
+values = torch.FloatTensor([3, 4, 5])
+input_data = torch.sparse_coo_tensor(indices, values, [2, 3])
+
+# Invoke torch.fft.fft to process input data
+output = torch.fft.fft(input_data.to_dense())
+
+print(output)
+
+# https://github.com/pytorch/pytorch/issues/120902
+# A sparse tensorroot@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.fft.fft-confirmed/bug.py
+Traceback (most recent call last):
+  File "torch.fft.fft-confirmed/bug.py", line 7, in <module>
+    input_data = torch.sparse_coo_tensor(indices, values, [2, 3])
+RuntimeError: size is inconsistent with indices: for dim 0, size is 2 but found index 2
+root@9d45bacfeafa:/home/torch# cat torch.fft.fft2-confirmed/bug.py
+import torch
+
+# Generate input data
+input_data = torch.randn(3, 3)
+
+# Invoke torch.fft.fft2 to process input data with an empty list for the dim parameter
+output = torch.fft.fft2(input_data, dim=[])
+
+print(output)
+
+# https://github.com/pytorch/pytorch/issues/120986
+# mutator: An empty tensorroot@
+root@9d45bacfeafa:/home/torch# python torch.fft.fft2-confirmed/bug.py
+Traceback (most recent call last):
+  File "torch.fft.fft2-confirmed/bug.py", line 7, in <module>
+    output = torch.fft.fft2(input_data, dim=[])
+RuntimeError: MKL FFT error: Intel MKL DFTI ERROR: Invalid configuration parameters
+root@9d45bacfeafa:/home/torch# cat torch.fft.rfftfreq-confirmed/bug.py 
+import torch
+
+# Generate input data
+n = 10
+input_data = torch.randn(n)
+
+# Invoke torch.fft.rfftfreq with specified parameters
+out = torch.empty(2, 2, requires_grad=True)
+freq = torch.fft.rfftfreq(n, out=out)
+
+print(freq)
+
+# https://github.com/pytorch/pytorch/issues/120988
+# An empty tensorroot@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.fft.rfftfreq-confirmed/bug.py 
+Traceback (most recent call last):
+  File "torch.fft.rfftfreq-confirmed/bug.py", line 9, in <module>
+    freq = torch.fft.rfftfreq(n, out=out)
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+root@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# ls
+torch.Tensor.to-confirmed  torch.conj_physical-reported                      torch.fft.fft-confirmed   torch.fft.rfftfreq-confirmed  torch.quantized_max_pool1d-confirmed
+torch.all-confirmed        torch.fake_quantize_per_channel_affine-confirmed  torch.fft.fft2-confirmed  torch.lu_unpack-confirmed     torch.where-confirmed
+root@9d45bacfeafa:/home/torch# cat torch.lu_unpack-confirmed/bug.py 
+import torch
+
+# Generate input data
+LU_data = torch.randn(3, 3)
+LU_pivots = torch.empty(0, dtype=torch.int32)
+
+# Invoke torch.lu_unpack
+P, L, U = torch.lu_unpack(LU_data, LU_pivots)
+
+# Print the results
+print("P matrix:")
+print(P)
+print("L matrix:")
+print(L)
+print("U matrix:")
+print(U)
+
+# https://github.com/pytorch/pytorch/issues/121584
+# An empty tensorroot@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.lu_unpack-confirmed/bug.py 
+Segmentation fault (core dumped)
+root@9d45bacfeafa:/home/torch# cat torch.quantized_max_pool1d-confirmed/bug.py 
+import torch
+
+# Generate input data
+input_data = torch.randn(1, 3, 10).float()  # Change the data type to float
+
+# Quantize the input data
+scale = 1.0
+zero_point = 0
+input_data_quantized = torch.quantize_per_tensor(input_data, scale, zero_point, torch.quint8)
+
+# Invoke torch.quantized_max_pool1d with an empty list for kernel_size
+output = torch.quantized_max_pool1d(input_data_quantized, kernel_size=[])
+
+print(output)
+
+# https://github.com/pytorch/pytorch/issues/121585
+# An empty tensorroot@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.quantized_max_pool1d-confirmed/bug.py 
+Segmentation fault (core dumped)
+root@9d45bacfeafa:/home/torch# cat torch.where-confirmed
+cat: torch.where-confirmed: Is a directory
+root@9d45bacfeafa:/home/torch# cat torch.where-confirmed/bug.py 
+import torch
+
+# Generate input data
+input_data = torch.randn(3, 3)
+condition = torch.rand(3, 3) > 0.5
+other_data = torch.ones(3, 3)
+
+# Create a zero-dimensional tensor for the output
+output = torch.tensor(0)
+
+# Process input data using torch.where
+output = torch.where(condition, input_data, other_data, out=output)
+
+print("Input Data:")
+print(input_data)
+print("\nCondition:")
+print(condition)
+print("\nOther Data:")
+print(other_data)
+print("\nOutput Data:")
+print(output)
+
+# https://github.com/pytorch/pytorch/issues/121397
+# A zero-dimensional tensor (scalar)root@9d45bacfeafa:/home/torch# 
+root@9d45bacfeafa:/home/torch# python torch.where-confirmed/bug.py 
+torch.where-confirmed/bug.py:12: UserWarning: An output with one or more elements was resized since it had shape [], which does not match the required output shape [3, 3]. This behavior is deprecated, and in a future PyTorch release outputs will not be resized unless they have zero elements. You can explicitly reuse an out tensor t by resizing it, inplace, to zero elements with t.resize_(0). (Triggered internally at  ../aten/src/ATen/native/Resize.cpp:17.)
+  output = torch.where(condition, input_data, other_data, out=output)
+Traceback (most recent call last):
+  File "torch.where-confirmed/bug.py", line 12, in <module>
+    output = torch.where(condition, input_data, other_data, out=output)
+RuntimeError: !needs_dynamic_casting<func_t>::check(iter) INTERNAL ASSERT FAILED at "../aten/src/ATen/native/cpu/Loops.h":315, please report a bug to PyTorch. 
+root@9d45bacfeafa:/home/torch# 
