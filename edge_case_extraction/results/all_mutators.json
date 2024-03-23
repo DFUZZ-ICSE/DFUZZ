@@ -1,0 +1,2500 @@
+[
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be greater than 0.0"
+    },
+    {
+        "types": [
+            "scalar_1"
+        ],
+        "mutator": "the `scalar_1` should not be complex"
+    },
+    {
+        "types": [
+            "scalar_1"
+        ],
+        "mutator": "the `scalar_1` should be greater than or equal to 0.0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 1 dimension"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a value"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same device"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a tensor on a cpu or cuda device"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be on a cpu or cuda device"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should be on the same device"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a floating point or complex dtype"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "scalar_1"
+        ],
+        "mutator": "the `scalar_1` should be equal to the number of dimensions of the `tensor_1` tensor"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 1 or 2"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be at least one-dimensional"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be non-negative"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have more than 0 elements"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be between 0 and 1"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have at least 2 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than or equal to 1"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 4 or 5 dimensions"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` scalar type should be equal to the `tensor_2` scalar type"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same number of dimensions"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the size of the last dimension of `tensor_1` should match the size of the 2nd dimension of `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the size of the last dimension of `tensor_1` should match the size of the 3rd dimension of `tensor_2`"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should not be empty"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be an mkldnn tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1`'s device should be equal to the input `device`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 2 dimensions"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the number of elements in `tensor_1` should be equivalent to the number of rows in `tensor_2`"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a length that is divisible by 2"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should not have a value or the value should be equal to 0"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have an even length"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size of 2"
+    },
+    {
+        "types": [
+            "int_2",
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than zero, the `int_2` should be greater than zero"
+    },
+    {
+        "types": [
+            "bool_1",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a non-empty 2d or 4d tensor, the `bool_1` should be a boolean"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should not be a complex tensor, the `tensor_2` should not be a complex tensor"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_2` should have the same data type as `tensor_1`"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should either be empty, a single int, or a tuple of two ints"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should either be a single int, or a tuple of two ints"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should be omitted or a list of one or three integers"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should be a list of one or three integers"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a non-empty 4d or 5d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be defined"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be defined"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same qscheme"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same scalar type"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a non-empty 3d data tensor"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size of 6"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than 3"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should have the same dimension as `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a non-empty 4d or 5d (batch mode) tensor"
+    },
+    {
+        "types": [
+            "int_3",
+            "int_2",
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than zero, the `int_2` should be greater than zero, the `int_3` should be greater than zero"
+    },
+    {
+        "types": [
+            "int_7",
+            "int_8",
+            "int_3",
+            "int_9",
+            "int_1",
+            "int_4",
+            "int_5",
+            "int_6",
+            "int_2"
+        ],
+        "mutator": "the `int_1` should be smaller than either `int_4` or `int_7`, the `int_2` should be smaller than either `int_5` or `int_8`, the `int_3` should be smaller than either `int_6` or `int_9`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have two or fewer dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a single element tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have same dimension as target (3)"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 4d tensor"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_2` should be undefined or have the same number of elements as the second dimension of `tensor_1`"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size of 4 or 5"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a tensor of dimension 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same shape"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 3d or 4d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 0 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a tensor of dimension 5"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same dtype as `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should be on the same device"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a complex tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a complex tensor"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have at least 2 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 0 and less than the number of dimensions of `tensor_1`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` value count should be equal to the sample point count"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should contain one int"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be less than 0"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be less than or equal to 1.0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 1d or 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 0d or 1d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 0d or 1d tensor and have a single element"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have more than 2 dimensions"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be positive"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be a non-negative number"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 1 or 2"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 1 or 2"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have length 3 along the specified dimension"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should not be empty"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a complex-valued input tensor matching the output from stft with return_complex=true"
+    },
+    {
+        "types": [
+            "bool_1"
+        ],
+        "mutator": "the `bool_1` should have a value"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 1"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should be greater than 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than 0 and contain more than 0 elements"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 2"
+    },
+    {
+        "types": [
+            "str_1"
+        ],
+        "mutator": "the `str_1` should be equal to '2'"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 1"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 1"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension of 1"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a sparse tensor"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size greater than or equal to 2"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should have the same scalar type as `tensor_2`"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be non-negative"
+    },
+    {
+        "types": [
+            "list_1",
+            "tensor_1"
+        ],
+        "mutator": "the `list_1` should be a list, the `tensor_1` should be a tensor"
+    },
+    {
+        "types": [
+            "bool_1"
+        ],
+        "mutator": "the `bool_1` should be false"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size that is a multiple of 5"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size that is a multiple of 4"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size that is a multiple of 3"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size that is a multiple of 2"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 0 and less than or equal to the size of the dimension `dim` of the tensor `tensor_1`"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be in the range [0, 1]"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be in the range [0, 1]"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be in the range [0, 1]"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be in the range [0, 1]"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` tensor must be same dtype as the input tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` tensor must be on the same device as the input tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have dimension less than or equal to 1"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same data type"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should be on the same device"
+    },
+    {
+        "types": [],
+        "mutator": "the `output_size[0]` should be greater than or equal to 0, the `output_size[1]` should be greater than or equal to 0"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should have the same data type as `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_2` should have the same data type as `tensor_1`"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same data type"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 1d or 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension of 1"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the number of elements in `tensor_1` should be equal to the number of elements in `tensor_2`"
+    },
+    {
+        "types": [
+            "bool_1",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a size of at least 1, and if `bool_1` is true, the number of offset should be at least 1"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size of 4"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same scalar type"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should not be quantized tensors"
+    },
+    {
+        "types": [
+            "scalar_2",
+            "scalar_1"
+        ],
+        "mutator": "either the `scalar_1` or `scalar_2` should not be none"
+    },
+    {
+        "types": [
+            "scalar_1"
+        ],
+        "mutator": "the `scalar_1` should not be a complex type"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same dtype"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have at least 2 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should be on the same device"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be contiguous"
+    },
+    {
+        "types": [
+            "bool_1"
+        ],
+        "mutator": "the `bool_1` should be false"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should be a nested tensor, the `tensor_2` should be a nested tensor"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be greater than 0"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor, the `tensor_2` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have all non-negative values"
+    },
+    {
+        "types": [
+            "int_1",
+            "tensor_1"
+        ],
+        "mutator": "the `int_1` should be greater than the maximum value in `tensor_1`"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 1"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be non-negative"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same number of elements"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_3",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor, the `tensor_2` should be a 1d tensor, the `tensor_3` should be a 1d tensor or a scalar"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_3",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same number of columns as the `tensor_2` has elements, and the `tensor_1` should have the same number of rows as the `tensor_3` has elements or the `tensor_3` is a scalar"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same number of columns"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same number of columns"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be non-negative"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be non-negative"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 1 dimension"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a conjugate view tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not have the negative bit set"
+    },
+    {
+        "types": [
+            "scalar_1"
+        ],
+        "mutator": "the `scalar_1` should not have a value"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a size greater than 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a non-negative number of elements"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same device"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 4 dimensions"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should not be empty"
+    },
+    {
+        "types": [],
+        "mutator": "the `names` should not be none"
+    },
+    {
+        "types": [
+            "int_1",
+            "int_2"
+        ],
+        "mutator": "the `int_1` should be less than or equal to `int_2`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have <= 2 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have at least 3 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a 0-dimensional tensor"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be positive"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be positive"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than 0"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same data type"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a sparse tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same sparse_dim and dense_dim as the input parameters"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a sparse tensor"
+    },
+    {
+        "types": [
+            "bool_1"
+        ],
+        "mutator": "the `bool_1` should be resizable"
+    },
+    {
+        "types": [
+            "int_2",
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than zero, the `int_2` should be greater than zero"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a non-empty 2d or 4d tensor"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same data types"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be defined or should be on the same device as the input `device`"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same number of dimensions"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same scalar type"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 0 dimension"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 0 dimension"
+    },
+    {
+        "types": [
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_2` should be a vector/scalar"
+    },
+    {
+        "types": [
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_2` should have dimension less than or equal to 1"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_3",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` device should be the same as the `tensor_3` device and the `tensor_2` device"
+    },
+    {
+        "types": [
+            "tensor_3",
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` device should be the same as the `tensor_3` device and the `tensor_2` device"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same scalar type as `tensor_2`"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should not be empty"
+    },
+    {
+        "types": [
+            "tensor_3",
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should have the same device as `tensor_3` and `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 0 or less than the number of dimensions of the `tensor_1` tensor"
+    },
+    {
+        "types": [
+            "int_1",
+            "int_2",
+            "int_3"
+        ],
+        "mutator": "the `int_1` should be greater than zero, the `int_2` should be greater than zero, the `int_3` should be greater than zero"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a non-empty 2d or 5d tensor"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 4 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 3 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should have the same type as `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should have the same type as `tensor_2` if `tensor_2` is defined"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 0 dimension(s), the `tensor_2` should have 0 dimension(s)"
+    },
+    {
+        "types": [
+            "list_1",
+            "bool_1"
+        ],
+        "mutator": "the `list_1` should be a list and the `bool_1` should be a boolean"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size of 2"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the first and second elements in `list_1` should be different"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 3d tensor"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same number of batches as `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have compatible matrix sizes for bmm operation"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1`'s dtype should be the same as `tensor_2`'s dtype"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 1-d tensor"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have compatible sizes for matrix multiplication"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same data type as `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` shape's last dimension should be less than or equal to the `tensor_2` shape's last dimension"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the number of dimensions of `tensor_1` should be one more than the number of dimensions of `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should satisfy the requirement that input.shape[-2] must be greater than or equal to input.shape[-1>"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should satisfy the requirement that input.shape[-1] must be greater than or equal to tau.shape[-1>"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d or higher dimensional tensor"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same shape except for the last dimension"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same dtype"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 5 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should be on the same device"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a number of elements greater than 0"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same device"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same device"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same data type as `self`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a cpu tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a cpu tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a complex tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a floating point tensor"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have compatible shapes for matrix multiplication"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the trailing dimension of `tensor_1` should be divisible by 16"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the shape of `tensor_1` must be divisible by 16"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a size greater than 16"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same size in dimension 1 as the `tensor_2` in dimension 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a size greater than 0 and be a multiple of 8 in dimension 1"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_2` should have the same size in dimension 0 as the `tensor_1`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_2` should have the same size in dimension 1 as the `tensor_1`"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 6"
+    },
+    {
+        "types": [
+            "bool_1"
+        ],
+        "mutator": "the `bool_1` should be false"
+    },
+    {
+        "types": [
+            "int_1",
+            "int_2"
+        ],
+        "mutator": "the `int_1` should be less than or equal to 0 and the `int_2` should be greater than or equal to 0"
+    },
+    {
+        "types": [
+            "int_1",
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the number of elements in `tensor_1` should be equal to the size of `tensor_2` along the `int_1`"
+    },
+    {
+        "types": [
+            "int_1",
+            "tensor_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 0 and less than the number of dimensions of `tensor_1`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_2` and `tensor_1` should have the same number of elements"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be between 0 and number of dimensions of input"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same shape"
+    },
+    {
+        "types": [
+            "int_1",
+            "tensor_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 0 and less than the number of dimensions of `tensor_1`"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same size as `tensor_2`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same device"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same device"
+    },
+    {
+        "types": [
+            "int_1",
+            "tensor_1"
+        ],
+        "mutator": "the `int_1` should be less than or equal to the number of elements in `tensor_1`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_2` and `tensor_1` should have the same number of elements"
+    },
+    {
+        "types": [
+            "int_1",
+            "int_3",
+            "int_2"
+        ],
+        "mutator": "the `int_1` must be between `int_2` and `int_3`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be on cpu device"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should be on the same device"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a tensor, and the `tensor_2` should be a tensor. both inputs must have the same quantization scheme."
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a tensor with a number of dimensions greater than 0"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size of 1 or 2"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should either be empty or have a size of 1 or 2"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size of 1 or 3"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should either be empty, or have a size of 1, or have a size of 3"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be either 2 or 4"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be less than the number of dimensions of `tensor_1`"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 0"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should be empty or a 3d list"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should be empty or a 2d list"
+    },
+    {
+        "types": [],
+        "mutator": "the `offsets_in` should have value"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be 2 or 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be 1 or 2d tensor"
+    },
+    {
+        "types": [
+            "int_2",
+            "tensor_1",
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be greater than or equal to 0 and less than or equal to the size of the dimension specified by `int_2` in the `tensor_1` tensor"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should not be empty"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "int_1"
+        ],
+        "mutator": "the `tensor_1` should be contiguous or the `int_1` should be less than or equal to 1"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_2` should be contiguous in the same memory format as the `tensor_1` tensor"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have values [1, 1]"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be defined"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be defined or should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same number of layers"
+    },
+    {
+        "types": [
+            "bool_1"
+        ],
+        "mutator": "the `bool_1` should be false"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "int_1"
+        ],
+        "mutator": "the last dimension of `tensor_1` should be equal to `int_1`"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_3",
+            "tensor_2"
+        ],
+        "mutator": "the shapes of `tensor_1`, `tensor_2`, and `tensor_3` should be the same"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_3",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should be a 4d tensor, the `tensor_2` should be a 4d tensor, the `tensor_3` should be a 4d tensor"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be equal to 0.0"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_3",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1`'s 4th dimension should be equal to the `tensor_3`'s 4th dimension, the `tensor_2`'s 4th dimension should be equal to the `tensor_3`'s 4th dimension"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor or a 4d tensor"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_3",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should be contiguous, the `tensor_2` should be contiguous, the `tensor_3` should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_3",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` dtype should be the same as `tensor_2` and `tensor_3` dtype"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_3",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` device should be the same as `tensor_2` and `tensor_3` device"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_3",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1`, `tensor_2`, and `tensor_3` should all be at least 2 dimensional"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 4 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be null"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be quantized"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a vulkan tensor"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have dimension less than or equal to 4, the `tensor_2` should have dimension less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have the same number of bytes as the destination buffer"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than or equal to 2 and less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 3 or 4 dimensions"
+    },
+    {
+        "types": [],
+        "mutator": "the `opt_dim` should have a value"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than or equal to 1 and less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be quantized"
+    },
+    {
+        "types": [
+            "list_1",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 4d tensor, the `list_1` should be a list of size 2"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than or equal to 1 and less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than or equal to 1 and less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a vulkan tensor"
+    },
+    {
+        "types": [
+            "float_1"
+        ],
+        "mutator": "the `float_1` should be greater than or equal to 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 4 dimensions"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 1"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be positive"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have dimensions less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than or equal to 2 and less than or equal to 4"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be within the range of [-self.dim(), self.dim() - 1]"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size greater than 0"
+    },
+    {
+        "types": [],
+        "mutator": "the `hx` should have the same size at dimension 2"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a vulkan tensor"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should have 1 element, the `tensor_2` should have 1 element"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should not be empty"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have a size less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have dimension less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than or equal to 1 and less than or equal to 3"
+    },
+    {
+        "types": [
+            "scalar_2",
+            "scalar_1"
+        ],
+        "mutator": "the `scalar_1` or the `scalar_2` should not be none"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should not be empty"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should not be empty"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than 0 and less than or equal to 4"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have equal sizes"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same number of sparse dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be coalesced"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a coalesced input"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` layout should be equal to the `tensor_2` layout"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the number of specified elements in `tensor_1` should be equal to the number of specified elements in `tensor_2`"
+    },
+    {
+        "types": [
+            "list_1"
+        ],
+        "mutator": "the `list_1` should have at least 2 elements"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "list_1"
+        ],
+        "mutator": "the last dimension of `tensor_1` should be less than or equal to the last element of `list_1`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a stride of 1"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should be on the same device"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have dense_dim equal to 0"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same shape"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have equal sizes"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be of format csr"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same batch size"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be dense"
+    },
+    {
+        "types": [],
+        "mutator": "the `self` should have 0 dense dims"
+    },
+    {
+        "types": [],
+        "mutator": "the `self` should have 3 sparse dims"
+    },
+    {
+        "types": [],
+        "mutator": "the `self.size(0)` should match `mat2.size(0)`"
+    },
+    {
+        "types": [],
+        "mutator": "the `self.size(2)` should match `mat2.size(1)`"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a cuda tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a cuda tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a cpu tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have 0d values"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a cpu tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a cpu tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a cpu tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a sparse tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a sparse tensor"
+    },
+    {
+        "types": [],
+        "mutator": "the `sparse_` should be a cuda tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the sizes of `tensor_1` and `sparse_` should be equal"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a sparse tensor"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have equal sizes"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should be a sparse tensor and the `tensor_2` should not be a sparse tensor"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor, the `tensor_2` should be a 1d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `self` and `tensor_1` should have the same size at the last dimension"
+    },
+    {
+        "types": [
+            "bool_1"
+        ],
+        "mutator": "the `bool_1` should not have a value"
+    },
+    {
+        "types": [
+            "scalar_1"
+        ],
+        "mutator": "the `scalar_1` should not be equal to 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a sparse tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a sparse tensor"
+    },
+    {
+        "types": [
+            "tensor_3",
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` device should be the same as the `tensor_2` device and the `tensor_3` device"
+    },
+    {
+        "types": [
+            "tensor_2",
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` scalar type should be the same as the `tensor_2` scalar type"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be at least a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "int_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension one less than the specified `int_1`"
+    },
+    {
+        "types": [],
+        "mutator": "the `dtype` should be empty"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should not be a nested tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the number of dimensions of `tensor_1` should be less than 3"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the number of dimensions of `tensor_1` should be greater than 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` tensor should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a non-zero number of elements"
+    },
+    {
+        "types": [],
+        "mutator": "the `weight_opt` and `bias_opt` should not be empty"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 3d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 2d tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 3d tensor"
+    },
+    {
+        "types": [
+            "int_1"
+        ],
+        "mutator": "the `int_1` should be equal to 0"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be contiguous"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should have 3 dimensions, the `tensor_2` should have 2 dimensions"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be nested"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension of 4 or 5"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should be in mkldnn layout, the `tensor_2` should be in mkldnn layout"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` needs to be mkldnn layout"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should have a dimension greater than 0"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should be of the same data type"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same data type"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` and `tensor_2` should have the same data type if `tensor_2` is defined"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be located on the cpu device"
+    },
+    {
+        "types": [
+            "tensor_1",
+            "tensor_2"
+        ],
+        "mutator": "the `tensor_1` should be of mkldnn layout, the `tensor_2` should be of mkldnn layout"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 4d tensor"
+    },
+    {
+        "types": [
+            "scalar_1"
+        ],
+        "mutator": "the `scalar_1` should not have a value"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be mkldnn or meta tensor"
+    },
+    {
+        "types": [
+            "tensor_1"
+        ],
+        "mutator": "the `tensor_1` should be a 4d or 5d tensor"
+    }
+]

@@ -1,0 +1,19 @@
+```
+<TARGET_CODE>
+```
+
+For each statement containing TORCH_CHECK, answer the following questions:
+(1) The TORCH_CHECK statement is checking which input variables (defined in the function header)? List the name of the input variables.
+(2) The TORCH_CHECK statement is checking whether the variables satisfy what requirements? Please summarize the requirements.
+(3) What type are these variables respectively. Considering only the following variable types: {Tensor, Int, Bool, Str, Float, Scalar, List}.
+
+Output the results in the following format:
+{
+  "The Nth TORCH_CHECK statement": {
+    "The statement in the source code": "", # the statement containing TORCH_CHECK in the source code
+    "The checked input variables (defined in the function header)": "", # List the name and type of the related input variables (defined in the function header), and use comma to separate, such as "var1(type1), var2(type2)". If this TORCH_CHECK statement is not directly related to input variables, return 'None'.
+    "Requirements": "", # whether the variables satisfy what requirements. Answer this question following "`<variable name>` should <requirement>", such as "the `input_t` shuold be a 2D tensor". Note that variable names should be enclosed in backticks(``).
+  }
+}
+
+Directly output the JSON content without any additional output (e.g., no need for code delimiters like ```).

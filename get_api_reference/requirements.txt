@@ -1,0 +1,5 @@
+torch==2.2.0
+transformers==4.36.2
+astunparse==1.6.3
+openai~=0.27.8
+colorlog
