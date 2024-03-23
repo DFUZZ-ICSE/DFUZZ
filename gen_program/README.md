@@ -1,18 +1,7 @@
-# Build environment
-```
-    conda activate icse2025
-```
-
 # Generate a valid program for each API
 ```
     python genPrograms.py
 ```
-
-Note that you should run `monitor_mem.py` at the same time to kill the programs that occupy too much memory:
-```
-    python monitor_mem.py
-```
-
 
 # Perform mutation
 ## For each target API, generate prompts based on the generated valid program and generated mutator.
@@ -33,5 +22,3 @@ Before run it, you need to define the target fileflod name.
 ```
     python extract_res.py 
 ```
-
-## test coverage based on mutated programs
