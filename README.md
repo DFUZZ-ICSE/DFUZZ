@@ -1,6 +1,13 @@
 # Description
 DFUZZ is a novel fuzzer that uses LLM to infer edge cases and generate initial test programs, which offer effective and efficient DL library API fuzzing. Evaluations show that DFUZZ consistently outperforms existing DL library fuzzers for PyTorch and TensorFlow.
 
+<p align="center">
+<kbd>
+<img src="framework.jpg" max-height="300">
+</kbd>
+<br>The framework of DFUZZ.
+</p>
+
 # Run
 DFUZZ is divided into three parts: Context-Free Edge Case Extraction, Get API Description, and Edge Case-Based Mutation.
 
